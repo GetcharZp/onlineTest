@@ -1,0 +1,107 @@
+<script src="/static/layui/layui.js" charset="utf-8"></script>
+<script src="/static/js/jquery-3.4.0.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+        //监听导航点击
+        element.on('nav(demo)', function (elem) {
+            //console.log(elem)
+            layer.msg(elem.text());
+        });
+    });
+
+    layui.use(['laypage', 'layer'], function () {
+        var laypage = layui.laypage,
+            layer = layui.layer;
+
+        //自定义首页、尾页、上一页、下一页文本
+        laypage.render({
+            elem: 'problemPage',
+            count: 100,
+            first: '首页',
+            last: '尾页',
+            prev: '<em>←</em>',
+            next: '<em>→</em>'
+        });
+    });
+
+    layui.use('layer', function () { //独立版的layer无需执行这一句
+        var $ = layui.jquery,
+            layer = layui.layer; //独立版的layer无需执行这一句
+        //触发事件
+        var active = {
+            offset: function (othis) {
+                var type = othis.data('type'),
+                    text = othis.text();
+
+                layer.open({
+                    type: 2,
+                    title: 'Login',
+                    area: ['470px', '300px'],
+                    content: "{:url('index/index/login')}",
+                    shadeClose: true
+                });
+            }
+        };
+
+        $('#layui-login').on('click', function () {
+            var othis = $(this),
+                method = othis.data('method');
+            active[method] ? active[method].call(this, othis) : '';
+        });
+
+        $('#layui-register').on('click', function () {
+            layer.open({
+                type: 2,
+                title: 'Register',
+                area: ['465px', '460px'],
+                content: "{:url('index/index/register')}",
+                shadeClose: true
+            });
+        });
+    });
+
+    $(function () {
+        $('.pagination').addClass('layui-laypage');
+
+        $(".pagination li").css("float", "left");
+
+        $('#loginOut').click(function () {
+            $.ajax({
+                url: "{:url('index/index/loginout')}",
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function () {
+                            window.parent.location.reload();
+                        });
+                    } else {
+                        layer.open({
+                            title: '退出失败',
+                            content: data.msg,
+                            icon: 5,
+                            anim: 6
+                        });
+                    }
+                }
+            });
+        });
+
+        $('.login-first').click(function () {
+            layer.open({
+                type: 2,
+                title: 'Login First',
+                area: ['470px', '300px'],
+                content: "{:url('index/index/login')}",
+                shadeClose: true
+            });
+            return false;
+        });
+
+    });
+</script>

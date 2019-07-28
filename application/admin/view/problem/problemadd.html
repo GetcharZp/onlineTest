@@ -1,0 +1,162 @@
+{include file="public/_head" /}
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file="public/_left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;问题管理
+                    </li>
+                    <li>
+                        问题添加
+                    </li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget radius-bordered">
+                            <div class="widget-header bordered-bottom bordered-themeprimary">
+                                <span class="widget-caption">问题添加</span>
+                            </div>
+                            <div class="widget-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="title" class="col-sm-2 control-label no-padding-right">问题标题</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="title" name="title" placeholder="问题标题" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="memlimit" class="col-sm-2 control-label no-padding-right">内存限制(MB)</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="memlimit" name="memlimit" placeholder="内存限制" value="128"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="timelimit" class="col-sm-2 control-label no-padding-right">时间限制(Sec)</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="timelimit" name="timelimit" placeholder="时间限制" value="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group layui-form-item">
+                                        <label for="difflavel" class="control-label col-sm-2">难易程度</label>
+                                        <div class="col-sm-6 layui-input-inline">
+                                            <select name="difflavel" id="difflavel" class="form-control">
+                                                <option value="1" selected>入门</option>
+                                                <option value="2">简单</option>
+                                                <option value="3">容易</option>
+                                                <option value="4">困难</option>
+                                                <option value="5">艰难</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="desc" class="control-label col-sm-2">题目描述</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="desc" id="desc" cols="80" rows="10" class=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="indesc" class="control-label col-sm-2">输入描述</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="indesc" id="indesc" cols="80" rows="10" class=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="outdesc" class="control-label col-sm-2">输出描述</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="outdesc" id="outdesc" cols="80" rows="10" class=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="insample" class="control-label col-sm-2">样例输入</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="insample" id="insample" cols="80" rows="10" class=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="outsample" class="control-label col-sm-2">样例输出</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="outsample" id="outsample" cols="80" rows="10" class=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="hint" class="control-label col-sm-2">提示</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="hint" id="hint" cols="80" rows="10" class=""></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-primary" id="problemAdd">添加</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+{include file="public/_foot" /}
+{include file="public/_script" /}
+<script src="/static/lib/ueditor/ueditor.config.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/lib/ueditor/ueditor.all.js"></script>
+<script>
+    $(function () {
+        UE.getEditor('desc');
+        UE.getEditor('indesc');
+        UE.getEditor('outdesc');
+        UE.getEditor('hint');
+
+        $('#problemAdd').click(function () {
+            $.ajax({
+                url:"{:url('admin/problem/problemadd')}",
+                type:'post',
+                data:$('form').serialize(),
+                dataType:'json',
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon:6,
+                            time:2000
+                        }, function () {
+                            location.href = data.url;
+                        });
+                    }else {
+                        layer.open({
+                            title:'添加失败',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+<!--  /Body -->
+</html>

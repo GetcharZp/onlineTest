@@ -1,0 +1,66 @@
+{include file="public/_head"}
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <a href="{:url('index/submit/submitlist')}">
+                        Judge Status
+                    </a>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th>Author</th>
+                            <th>Pro.ID</th>
+                            <th>Judge Status</th>
+                            <th>language</th>
+                            <th>Exe.Time</th>
+                            <th>Exe.Memory</th>
+                            <th>Code.Len</th>
+                            <th>Submit Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="submits" id="vo"}
+                        <tr>
+                            <td>
+                                <a href="{:url('index/user/userinfo', ['id' => $vo.user_id])}">{$vo.user.username}</a>
+                            </td>
+                            <td>
+                                <a href="{:url('index/problem/probleminfo', ['id' => $vo.pro_id])}">{$vo.pro_id}</a>
+                            </td>
+                            <td>
+                                {if $vo.judge_status == 5}
+                                <span class="layui-badge layui-bg-cyan">Accept</span>
+                                {/if}
+                                {if $vo.judge_status == 1}
+                                <span class="layui-badge layui-bg-green">Waiting</span>
+                                {/if}
+                            </td>
+                            <td>
+                                {if $vo.language == 1}
+                                <span class="layui-badge layui-bg-cyan">C/C++</span>
+                                {else /}
+                                <span class="layui-badge layui-bg-cyan">Java</span>
+                                {/if}
+                            </td>
+                            <td>{$vo.exe_time}</td>
+                            <td>{$vo.exe_memory}</td>
+                            <td>{$vo.code_len}</td>
+                            <td>{$vo.create_time}</td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$submits->render()|raw}
+                </div>
+            </div>
+        </div>
+        {include file="public/_foot"}
+    </div>
+</div>
+{include file="public/_script"}
+</body>
+</html>

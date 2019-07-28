@@ -1,0 +1,75 @@
+{include file="public/_head" /}
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file="public/_left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;评论内容
+                    </li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget radius-bordered">
+                            <div class="widget-header bordered-bottom bordered-themeprimary">
+                                <span class="widget-caption">评论内容</span>
+                            </div>
+                            <div class="widget-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">问题ID</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control"  placeholder="问题ID" value="{$commentInfo.question.id}" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cate_id" class="col-sm-2 control-label no-padding-right">问题类型</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="cate_id" placeholder="问题类型" value="{$commentInfo.question.cate.catename}" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="username" class="col-sm-2 control-label no-padding-right">评论用户</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="username" value="{$commentInfo.user.username}" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="content" class="col-sm-2 control-label no-padding-right">评论内容</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="content" id="content" cols="30" rows="10" class="form-control" readonly>{$commentInfo.content}</textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+{include file="public/_foot" /}
+{include file="public/_script" /}
+</body>
+<!--  /Body -->
+</html>

@@ -1,0 +1,184 @@
+{include file="public/_head" /}
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file="public/_left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;问题管理
+                    </li>
+                    <li>问题列表</li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <a href="{:url('admin/problem/problemadd')}" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>&nbsp;问题添加</a>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget">
+                            <div class="widget-header">
+                                <div class="widget-buttons">
+                                    {$problems->render()|raw|replace}
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <table class="table table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>标题</th>
+                                        <th>作者</th>
+                                        <th>更新时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {volist name="problems" id="vo"}
+                                    <tr>
+                                        <td>
+                                            <a href="{:url('admin/problem/problemread', ['id' => $vo.id])}" class="btn btn-azure btn-xs">{$vo.title}</a>
+                                        </td>
+                                        <td>{$vo.admin.username}</td>
+                                        <td>{$vo.update_time}</td>
+                                        <td>{if $vo.status == 1}正常{else /}禁用{/if}</td>
+                                        {if session('admin.is_super') == 1}
+                                        <td>
+                                            {if $vo.status == 0}
+                                            <a href="#" class="btn btn-success btn-xs problem-status" dataid="{$vo.id}" statusid="{$vo.status}">启用</a>
+                                            {else /}
+                                            <a href="#" class="btn btn-warning btn-xs problem-status" dataid="{$vo.id}" statusid="{$vo.status}">禁用</a>
+                                            {/if}
+                                            <a href="{:url('admin/problem/problemedit', ['id' => $vo.id])}" class="btn btn-azure btn-xs">编辑</a>
+                                            <a href="#" class="btn btn-danger btn-xs problem-del" dataid="{$vo.id}">删除</a>
+                                            <a href="{:url('admin/testdata/testdataadd', ['id' => $vo.id])}" class="btn btn-azure btn-xs " >添加测试数据</a>
+                                        </td>
+                                        {else /}
+                                        {if session('admin.id') == $vo.admin_id}
+                                        <td>
+                                            {if $vo.status == 0}
+                                            <a href="#" class="btn btn-success btn-xs problem-status" dataid="{$vo.id}" statusid="{$vo.status}">启用</a>
+                                            {else /}
+                                            <a href="#" class="btn btn-warning btn-xs problem-status" dataid="{$vo.id}" statusid="{$vo.status}">禁用</a>
+                                            {/if}
+                                            <a href="{:url('admin/problem/problemedit', ['id' => $vo.id])}" class="btn btn-azure btn-xs">编辑</a>
+                                            <a href="#" class="btn btn-danger btn-xs problem-del" dataid="{$vo.id}">删除</a>
+                                            <a href="{:url('admin/testdata/testdataadd', ['id' => $vo.id])}" class="btn btn-azure btn-xs " >添加测试数据</a>
+                                        </td>
+                                        {else /}
+                                        <td>无权限</td>
+                                        {/if}
+                                        {/if}
+                                    </tr>
+                                    {/volist}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+{include file="public/_foot" /}
+{include file="public/_script" /}
+<script>
+    $(function () {
+        $('.pagination').addClass('pagination-sm');
+
+        $('.problem-status').click(function () {
+            var id = $(this).attr('dataid');
+            var status = $(this).attr('statusid');
+            if (status == 1) {
+                var msg = '确定禁用吗？';
+            }else {
+                var msg = '确定启用吗？';
+            }
+            layer.confirm(msg, {
+                title:'状态操作',
+                icon:3
+            }, function (index) {
+                layer.close(index);
+                $.ajax({
+                    url:"{:url('admin/problem/problemstatus')}",
+                    type:'post',
+                    data:{id:id, status:status},
+                    dataType:'json',
+                    success:function (data) {
+                        if (data.code == 1) {
+                            layer.msg(data.msg, {
+                                icon:6,
+                                time:2000
+                            }, function () {
+                                location.href = data.url;
+                            });
+                        }else {
+                            layer.open({
+                                title:'操作失败',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            });
+                        }
+                    }
+                });
+            });
+            return false;
+        });
+
+        $('.problem-del').click(function () {
+            var id = $(this).attr('dataid');
+            layer.confirm('确定删除吗？', {
+                title:'删除问题',
+                icon:3,
+                anim:6
+            }, function (index) {
+                layer.close(index);
+                $.ajax({
+                    url:"{:url('admin/problem/problemdel')}",
+                    type:'post',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function (data) {
+                        if (data.code == 1) {
+                            layer.msg(data.msg, {
+                                icon:6,
+                                time:2000
+                            }, function () {
+                                location.href = data.url;
+                            });
+                        }else {
+                            layer.open({
+                                title:'操作失败',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            });
+                        }
+                    }
+                });
+            });
+            return false;
+        });
+
+    });
+</script>
+</body>
+<!--  /Body -->
+</html>

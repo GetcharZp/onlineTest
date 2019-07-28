@@ -1,0 +1,106 @@
+{include file="public/_head" /}
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file="public/_left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;测试数据修改
+                    </li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget radius-bordered">
+                            <div class="widget-header bordered-bottom bordered-themeprimary">
+                                <span class="widget-caption">测试数据修改</span>
+                            </div>
+                            <div class="widget-body">
+                                <form class="form-horizontal">
+                                    <input type="hidden" name="id" value="{$testdataInfo.id}">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">问题标题</div>
+                                        <div class="layui-card-body">
+                                            {$testdataInfo.problem.title}
+                                        </div>
+                                    </div>
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">问题作者</div>
+                                        <div class="layui-card-body">
+                                            {$testdataInfo.admin.username}
+                                        </div>
+                                    </div>
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">输入数据</div>
+                                        <div class="layui-card-body">
+                                            <textarea name="indata" cols="80" rows="10" class="">{$testdataInfo.indata}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">输出数据</div>
+                                        <div class="layui-card-body">
+                                            <textarea name="outdata" cols="80" rows="10" class="">{$testdataInfo.outdata}</textarea>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary" id="testdataEdit">修改</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+{include file="public/_foot" /}
+{include file="public/_script" /}
+<script>
+    $(function () {
+        $('#testdataEdit').click(function () {
+            $.ajax({
+                url:"{:url('admin/testdata/testdataedit')}",
+                type:'post',
+                data:$('form').serialize(),
+                dataType:'json',
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon:6,
+                            time:2000
+                        }, function () {
+                            location.href = data.url;
+                        });
+                    }else {
+                        layer.open({
+                            title:'修改失败',
+                            content:data.msg,
+                            icon:5,
+                            anim:6
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    })
+</script>
+</body>
+<!--  /Body -->
+</html>

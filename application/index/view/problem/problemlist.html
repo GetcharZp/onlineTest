@@ -1,0 +1,107 @@
+{include file="public/_head" /}
+
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md10">
+            <div class="layui-card">
+                <div class="layui-card-header">Problem Set</div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th style="width: 50px;">Solve</th>
+                            <th>#</th>
+                            <th>Problem Name</th>
+                            <th>Difficulty</th>
+                            <th>Ratio</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="problems" id="vo"}
+                        <tr>
+                            <td></td>
+                            <td>{$vo.id}</td>
+                            <td>
+                                <a href="{:url('index/problem/probleminfo', ['id' => $vo.id])}">{$vo.title}</a>
+                                <span class="problem-tags">
+                                    <span class="layui-badge layui-bg-cyan">{$vo.cate_id}</span>
+                                </span>
+                            </td>
+                            <td>
+                                <div class="layui-progress">
+                                    <div class="layui-progress-bar layui-bg-red" lay-percent="{$vo.difflavel}/5"></div>
+                                </div>
+                            </td>
+                            {if $vo.subnum == 0}
+                            <td>({$vo.acnum} / {$vo.subnum}) 0.00%</td>
+                            {else /}
+                            <td>({$vo.acnum} / {$vo.subnum}) {$vo.acnum * 100 / $vo.subnum}%</td>
+                            {/if}
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$problems->render()|raw}
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md2">
+            <div class="layui-card">
+                <div class="layui-card-header">Problem Classification</div>
+                <div class="layui-card-body">
+                    <ul id="problemClass"></ul>
+                </div>
+            </div>
+        </div>
+        {include file="public/_foot"}
+    </div>
+</div>
+
+{include file="public/_script" /}
+<script>
+    layui.use(['tree', 'layer'], function () {
+        var layer = layui.layer,
+            $ = layui.jquery;
+
+        layui.tree({
+            elem: '#problemClass' //指定元素
+            ,
+            target: '_blank' //是否新选项卡打开（比如节点返回href才有效）
+            ,
+            click: function (item) { //点击节点回调
+                layer.msg('当前节名称：' + item.name + '<br>全部参数：' + JSON.stringify(item));
+                console.log(item);
+            },
+            nodes: [ //节点
+                {
+                    name: 'Strings',
+                    id: 1,
+                    alias: 'problemString',
+                    children: [{
+                        name: 'Kmp',
+                        id: 11
+                    }, {
+                        name: 'Manacher',
+                        id: 12
+                    }]
+                }, {
+                    name: 'problemSearch',
+                    id: 2,
+                    children: [{
+                        name: 'DFS',
+                        id: 21,
+                        spread: true,
+                    }, {
+                        name: 'BFS',
+                        id: 212
+                    }, {
+                        name: 'A*',
+                        id: 213
+                    }]
+                }
+            ]
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+{include file="public/_head" /}
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file="public/_left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;问题内容
+                    </li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget radius-bordered">
+                            <div class="widget-header bordered-bottom bordered-themeprimary">
+                                <span class="widget-caption">问题内容</span>
+                            </div>
+                            <div class="widget-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="title" class="col-sm-2 control-label no-padding-right">问题分类</label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="title" placeholder="问题分类" value="{$questionInfo.cate.catename}" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">问题难易</label>
+                                        <div class="col-sm-6">
+                                            {if $questionInfo.difflavel == 1}
+                                            <input value="入门" type="text" class="form-control" readonly>
+                                            {/if}
+
+                                            {if $questionInfo.difflavel == 2}
+                                            <input value="简单" type="text" class="form-control" readonly>
+                                            {/if}
+
+                                            {if $questionInfo.difflavel == 3}
+                                            <input value="容易" type="text" class="form-control" readonly>
+                                            {/if}
+
+                                            {if $questionInfo.difflavel == 4}
+                                            <input value="困难" type="text" class="form-control" readonly>
+                                            {/if}
+
+                                            {if $questionInfo.difflavel == 5}
+                                            <input value="艰难" type="text" class="form-control" readonly>
+                                            {/if}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">问题类别</label>
+                                        <div class="col-sm-6">
+                                            {if $questionInfo.type == 1} <input value="选择题" type="text" class="form-control" readonly> {/if}
+                                            {if $questionInfo.type == 2} <input value="判断题" type="text" class="form-control" readonly> {/if}
+                                            {if $questionInfo.type == 3} <input value="填空题" type="text" class="form-control" readonly> {/if}
+                                            {if $questionInfo.type == 4} <input value="解答题" type="text" class="form-control" readonly> {/if}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">作  者</label>
+                                        <div class="col-sm-6">
+                                            <input value="{$questionInfo.admin.username}" type="text" class="form-control" readonly>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">问题描述</label>
+                                        <div class="col-sm-6">
+                                            {$questionInfo.content|raw}
+                                        </div>
+                                    </div>
+                                    {if $questionInfo.type == 1}
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">A:</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="ans_a" cols="80" rows="4" readonly>{$questionInfo.ans_a}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">B:</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="ans_b" cols="80" rows="4" readonly>{$questionInfo.ans_b}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">C:</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="ans_c" cols="80" rows="4" readonly>{$questionInfo.ans_c}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">D:</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="ans_d" cols="80" rows="4" readonly>{$questionInfo.ans_d}</textarea>
+                                        </div>
+                                    </div>
+                                    {/if}
+                                    {if $questionInfo.type == 2}
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">A:</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="ans_a" cols="80" rows="4" readonly>{$questionInfo.ans_a}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">B:</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="ans_b" cols="80" rows="4" readonly>{$questionInfo.ans_b}</textarea>
+                                        </div>
+                                    </div>
+                                    {/if}
+                                    <br>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">参考答案</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="acans" cols="80" rows="3" readonly>{$questionInfo.acans}</textarea>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+{include file="public/_foot" /}
+{include file="public/_script" /}
+</body>
+<!--  /Body -->
+</html>

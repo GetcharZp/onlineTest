@@ -1,0 +1,105 @@
+{include file="public/_head" /}
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        {if session('?user.id')}
+        <div class="layui-col-md9">
+        {else /}
+        <div class="layui-col-md12">
+        {/if}
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <a href="{:url('index/ranking/rankinglist')}">Ranking</a>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Author</th>
+                            <th>Solved</th>
+                            <th>Submit</th>
+                            <th>Ratio</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="rankings" id="vo" key="k"}
+                        <tr>
+                            <td>{$k + ($currentPage - 1) * 6}</td>
+                            <td>
+                                <a href="{:url('index/user/userinfo', ['id' => $vo.id])}">
+                                    {$vo.username}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#">
+                                    {$vo.acnum}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="#">
+                                    {$vo.subnum}
+                                </a>
+                            </td>
+                            {if $vo.subnum == 0}
+                            <td>0.00%</td>
+                            {else /}
+                            <td>
+                                <?php
+                                    // 用原生PHP实现的时候不能用.语法
+                                    $ratio = $vo['acnum'] / $vo['subnum'] * 100;
+                                    echo sprintf("%.2f", $ratio);
+                                ?>%
+                            </td>
+                            {/if}
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$rankings->render()|raw}
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            {if session('?user.id')}
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    Recent Submissions:<br>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th>Pro.ID</th>
+                            <th>Judge Status</th>
+                            <th>Pro.Cate</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="quessubs" id="vo"}
+                        <tr>
+                            <td>
+                                <a href="{:url('index/question/question', ['id'=>$vo.que_id])}">{$vo.que_id}</a>
+                            </td>
+                            <td>
+                                {if $vo.judge_status == 2}
+                                <span class="layui-badge layui-bg-cyan">Accepted</span>
+                                {/if}
+                                {if $vo.judge_status == 3}
+                                <span class="layui-badge layui-bg-red">Wrong Answer</span>
+                                {/if}
+                            </td>
+                            <td>{$vo.question.cate.catename}</td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {/if}
+        </div>
+        {include file="public/_foot"}
+    </div>
+</div>
+{include file="public/_script"}
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/layui_control.css" />
+    <title>Index</title>
+</head>
+<body>
+<ul class="layui-nav">
+    <li class="layui-nav-item"><a href="{:url('index/index/index')}">Index</a></li>
+    <li class="layui-nav-item"><a href="{:url('index/question/questioncate')}">Problem</a></li>
+    <li class="layui-nav-item"><a href="{:url('index/ranking/rankinglist')}">Ranking</a></li>
+    <!--<li class="layui-nav-item"><a href="contest_list.html">Contest</a></li>-->
+    <li class="layui-nav-item"><a href="{:url('index/quessub/quessublist')}">Judge Status</a></li>
+    {if session('?user.id')}
+    <li class="layui-nav-item register-right">
+        <a id="loginOut" data-type="auto" data-method="offset" href="#">Exit</a>
+    </li>
+    <li class="layui-nav-item login-right">
+        <a data-type="auto" data-method="offset" href="{:url('index/user/userinfo', ['id' => session('user.id')])}">{:session('user.username')}</a>
+    </li>
+    {else /}
+    <li class="layui-nav-item register-right">
+        <a id="layui-register" data-type="auto" data-method="offset" href="#">Register</a>
+    </li>
+    <li class="layui-nav-item login-right">
+        <a id="layui-login" data-type="auto" data-method="offset" href="#">Login</a>
+    </li>
+    {/if}
+    <li class="layui-nav-item search-right">
+        <form action="{:url('index/question/questionkeyword')}" method="get">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input name="keyword" class="layui-input" type="text" placeholder="搜索">
+                    <input type="submit" hidden>
+                </div>
+            </div>
+        </form>
+    </li>
+</ul>

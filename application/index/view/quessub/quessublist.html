@@ -1,0 +1,63 @@
+{include file="public/_head"}
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <a href="{:url('index/quessub/quessublist')}">
+                        Judge Status
+                    </a>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th>Author</th>
+                            <th>Pro.ID</th>
+                            <th>Pro.Cate</th>
+                            <th>Judge Status</th>
+                            <th>Create Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="quessubs" id="vo"}
+                        <tr>
+                            <td>
+                                <a href="{:url('index/user/userinfo', ['id' => $vo.user_id])}">{$vo.user.username}</a>
+                            </td>
+                            <td>
+                                <a href="{:url('index/question/question', ['id' => $vo.que_id])}">{$vo.que_id}</a>
+                            </td>
+                            <td>
+                                {if session('?user.id')}
+                                <a href="{:url('index/question/questioninfo', ['cate_id' => $vo.cate_id])}">{$vo.cate.catename}</a>
+                                {else /}
+                                <a href="#" class="login-first">{$vo.cate.catename}</a>
+                                {/if}
+                            </td>
+                            <td>
+                                {if $vo.judge_status == 2}
+                                <span class="layui-badge layui-bg-cyan">Accept</span>
+                                {/if}
+                                {if $vo.judge_status == 1}
+                                <span class="layui-badge layui-bg-green">Waiting</span>
+                                {/if}
+                                {if $vo.judge_status == 3}
+                                <span class="layui-badge layui-bg-red">Wrong Answer</span>
+                                {/if}
+                            </td>
+                            <td>{$vo.create_time}</td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                    {$quessubs->render()|raw}
+                </div>
+            </div>
+        </div>
+        {include file="public/_foot"}
+    </div>
+</div>
+{include file="public/_script"}
+</body>
+</html>

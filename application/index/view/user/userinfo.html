@@ -1,0 +1,309 @@
+{include file="public/_head" /}
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        {if session('?user.id')}
+        <div class="layui-col-md9">
+        {else /}
+        <div class="layui-col-md12">
+        {/if}
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <a href="{:url('index/user/userinfo', ['id'=>$userinfo.id])}">{$userinfo.username}</a>
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-card">
+                        {if session('user.id') == $userinfo.id}
+                        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                            <ul class="layui-tab-title">
+                                <li class="layui-this">Setting Base</li>
+                                <li>Setting Password</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item layui-show">
+                                    <div class="layui-card-body">
+                                        <form class="layui-form layui-form-pane " action="">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">email</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="email" class="layui-input" type="text" placeholder="请输入email" autocomplete="off" value="{$userinfo.email}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">QQ</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="qq" class="layui-input" type="text" placeholder="请输入QQ" autocomplete="off" value="{$userinfo.qq}">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">Blog</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="blog" class="layui-input" type="text" placeholder="请输入您的博客地址" autocomplete="off" value="{$userinfo.blog}">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item layui-form-text">
+                                                <label class="layui-form-label">Person Sign</label>
+                                                <div class="layui-input-block">
+                                                    <textarea class="layui-textarea" placeholder="请输入您的个人简介" name="sign">{$userinfo.sign}</textarea>
+                                                </div>
+                                            </div>
+                                            <div class="layui-card">
+                                                <button type="button" id="reviseBase" class="layui-btn layui-btn-normal layui-problem-submit">Revise</button>
+                                            </div>
+                                            <br><br>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div class="layui-card-body">
+                                        <form class="layui-form layui-form-pane " action="">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">Old</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="oldpass" class="layui-input" type="password" placeholder="请输入您的原密码" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">New</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="password" class="layui-input" type="password" placeholder="请输入您的新密码" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">Confirm</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="conpass" class="layui-input" type="password" placeholder="请确认您的新密码" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="layui-card">
+                                                <button type="button" id="revisePass" class="layui-btn layui-btn-normal layui-problem-submit">Revise</button>
+                                            </div>
+                                            <br><br>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {else /}
+                        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                            <ul class="layui-tab-title">
+                                <li class="layui-this">Base Information</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item layui-show">
+                                    <div class="layui-card-body">
+                                        <form class="layui-form layui-form-pane " action="">
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">email</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="email" class="layui-input" type="text" placeholder="请输入email" autocomplete="off" value="{$userinfo.email}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">QQ</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="qq" class="layui-input" type="text" placeholder="请输入QQ" autocomplete="off" value="{$userinfo.qq}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item">
+                                                <label class="layui-form-label">Blog</label>
+                                                <div class="layui-input-inline">
+                                                    <input name="blog" class="layui-input" type="text" placeholder="请输入您的博客地址" autocomplete="off" value="{$userinfo.blog}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="layui-form-item layui-form-text">
+                                                <label class="layui-form-label">Person Sign</label>
+                                                <div class="layui-input-block">
+                                                    <textarea class="layui-textarea" placeholder="请输入您的个人简介" name="sign" readonly>{$userinfo.sign}</textarea>
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/if}
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">AcNum & SubNum Chart:</span>
+                        </div>
+                        <div class="layui-card-body">
+                            <div id="rankingChart" style="width:800px; height: 400px;"></div>
+                        </div>
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">Solved Problems：</span>
+                            <span class="layui-badge layui-bg-red">{$userinfo.acnum}</span>
+                            <span class="layui-badge layui-bg-red">{$userinfo.subnum}</span>
+                        </div>
+                        <div class="layui-card-body">
+                            <table class="layui-table" lay-skin="nob" lay-even="">
+                                <thead>
+                                <tr>
+                                    <th>Author</th>
+                                    <th>Pro.ID</th>
+                                    <th>Judge Status</th>
+                                    <th>Create Time</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {volist name="quessub_page" id="vo"}
+                                <tr>
+                                    <td>
+                                        <a href="{:url('index/user/userinfo', ['id' => $vo.user_id])}">{$vo.user.username}</a>
+                                    </td>
+                                    <td>
+                                        <a href="{:url('index/question/question', ['id' => $vo.que_id])}">{$vo.que_id}</a>
+                                    </td>
+                                    <td>
+                                        {if $vo.judge_status == 2}
+                                        <span class="layui-badge layui-bg-cyan">Accept</span>
+                                        {/if}
+                                        {if $vo.judge_status == 1}
+                                        <span class="layui-badge layui-bg-green">Waiting</span>
+                                        {/if}
+                                        {if $vo.judge_status == 3}
+                                        <span class="layui-badge layui-bg-red">Wrong Answer</span>
+                                        {/if}
+                                    </td>
+                                    <td>{$vo.create_time}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                            {$quessub_page->render()|raw}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {if session('?user.id')}
+        <div class="layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    Ranking:&nbsp;<span class="layui-badge layui-bg-cyan">1</span><br>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th>Pro.ID</th>
+                            <th>Judge Status</th>
+                            <th>Pro.Cate</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="quessubs" id="vo"}
+                        <tr>
+                            <td>
+                                <a href="{:url('index/question/question', ['id'=>$vo.que_id])}">{$vo.que_id}</a>
+                            </td>
+                            <td>
+                                {if $vo.judge_status == 2}
+                                <span class="layui-badge layui-bg-cyan">Accepted</span>
+                                {/if}
+                                {if $vo.judge_status == 3}
+                                <span class="layui-badge layui-bg-red">Wrong Answer</span>
+                                {/if}
+                            </td>
+                            <td>{$vo.question.cate.catename}</td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {/if}
+        {include file="public/_foot"}
+    </div>
+</div>
+{include file="public/_script"}
+<script type="text/javascript" src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+<script>
+    $(function () {
+        $('#reviseBase').click(function () {
+            $.ajax({
+                url: "{:url('index/user/userbaseedit')}",
+                type: 'post',
+                data: $('form').serialize(),
+                dataType: 'json',
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        });
+                    } else {
+                        layer.open({
+                            title: '修改失败',
+                            content: data.msg,
+                            icon: 5,
+                            anim: 6,
+                            shadeClose: true
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+
+        $('#revisePass').click(function () {
+            $.ajax({
+                url: "{:url('index/user/userpassedit')}",
+                data: $('form').serialize(),
+                type: 'post',
+                dataType: 'json',
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        });
+                    } else {
+                        layer.open({
+                            title: "密码修改失败",
+                            content: data.msg,
+                            icon: 5,
+                            anim: 6,
+                            shadeClose:true
+                        });
+                    }
+                }
+            });
+            return false;
+        })
+    });
+
+    var option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: {
+            type: 'category',
+            data: <?php echo $days?>
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            name: 'submit number',
+            type: 'line',
+            data: <?php echo $usersubnum?>
+        },{
+            name: 'AC number',
+            type: 'line',
+            data: <?php echo $useracnum?>
+         }]
+    };
+
+    //初始化echarts实例
+    var myChart = echarts.init(document.getElementById('rankingChart'));
+
+    //使用制定的配置项和数据显示图表
+    myChart.setOption(option);
+</script>
+</body>
+</html>

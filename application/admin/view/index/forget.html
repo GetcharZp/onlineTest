@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>忘记密码</title>
+    <link href="/static/admin/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/admin/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/static/admin/css/weather-icons.min.css" rel="stylesheet" />
+    <link id="beyond-link" href="/static/admin/css/beyond.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="login-container">
+    <div class="loginbox bg-white">
+        <form action="">
+            <div class="loginbox-title">忘记密码</div>
+
+            <div class="loginbox-or">
+                <div class="or-line"></div>
+            </div>
+            <div class="loginbox-textbox">
+                <input type="text" class="form-control" name="email" placeholder="输入注册邮箱" />
+            </div>
+            <div class="loginbox-textbox hidden">
+                <input type="text" class="form-control" name="code" placeholder="输入验证码" />
+            </div>
+            <div class="loginbox-submit">
+                <input type="submit" class="btn btn-primary btn-block" id="getCode" value="获取验证码">
+            </div>
+            <div class="loginbox-submit hidden">
+                <input type="submit" class="btn btn-primary btn-block" id="reset" value="重置密码">
+            </div>
+            <div class="loginbox-signup">
+                <a href="{:url('admin/index/login')}">返回登录</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/static/admin/js/skins.min.js"></script>
+<!--Basic Scripts-->
+<script src="/static/admin/js/jquery.min.js"></script>
+<script src="/static/admin/js/bootstrap.min.js"></script>
+<script src="/static/admin/js/slimscroll/jquery.slimscroll.min.js"></script>
+<!--Beyond Scripts-->
+<script src="/static/admin/js/beyond.js"></script>
+<script src="/static/lib/layer/layer.js"></script>
+<script>
+    $(window).bind("load", function () {
+
+        /*Sets Themed Colors Based on Themes*/
+        themeprimary = getThemeColorFromCss('themeprimary');
+        themesecondary = getThemeColorFromCss('themesecondary');
+        themethirdcolor = getThemeColorFromCss('themethirdcolor');
+        themefourthcolor = getThemeColorFromCss('themefourthcolor');
+        themefifthcolor = getThemeColorFromCss('themefifthcolor');
+
+    });
+
+    $(function () {
+       $('#getCode').click(function () {
+           var email = $('[name=email]').val();
+           $.ajax({
+               url:"{:url('admin/index/forget')}",
+               type:'post',
+               data:{email:email},
+               dataType:'json',
+               success:function (data) {
+                   if (data.code == 1) {
+                       layer.msg(data.msg, {
+                           icon:6,
+                           time:2000
+                       }, function () {
+                           $('[name=email]').parent().addClass('hidden');
+                           $('[name=code]').parent().removeClass('hidden');
+                           $('#getCode').parent().addClass('hidden');
+                           $('#reset').parent().removeClass('hidden');
+                       });
+                   }else {
+                       layer.open({
+                           title:'操作失败',
+                           content:data.msg,
+                           icon:5,
+                           anim:6
+                       });
+                   }
+               }
+           });
+           return false;
+       });
+
+       $('#reset').click(function () {
+           $.ajax({
+               url:"{:url('admin/index/forgetre')}",
+               type:'post',
+               data:$('form').serialize(),
+               dataType:'json',
+               success:function (data) {
+                   if (data.code == 1) {
+                       layer.msg(data.msg, {
+                           icon:6,
+                           time:2000
+                       }, function () {
+                           location.href = data.url;
+                       });
+                   }else {
+                       layer.open({
+                           title:'密码重置失败',
+                           content:data.msg,
+                           icon:5,
+                           anim:6
+                       });
+                   }
+               }
+           });
+           return false;
+       });
+    });
+</script>
+</body>
+<!--  /Body -->
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>代码提交</title>
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/layui_control.css" />
+</head>
+<body>
+
+<div class="layui-card">
+    <div class="layui-card-body">
+        <form action="" method="" class="layui-form">
+            <input type="hidden" name="pro_id" value="{$pro_id}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">Language</label>
+                <div class="layui-input-block">
+                    <select name="language">
+                        <option value="1" selected="">C/C++</option>
+                        <option value="2">Java</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">Code</label>
+                <div class="layui-input-block">
+                    <textarea class="layui-textarea" rows="13" name="code" placeholder="请输入您的代码"></textarea>
+                </div>
+            </div>
+            <div class="layui-card">
+                <button id="submit-code" type="button" class="layui-btn layui-btn-normal layui-problem-submit">Submit</button>
+            </div>
+            <br><br>
+        </form>
+    </div>
+</div>
+<script src="/static/layui/layui.all.js" charset="utf-8"></script>
+<script src="/static/js/jquery-3.4.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/lib/layer/layer.js"></script>
+<script>
+    $(function () {
+        $('#submit-code').click(function () {
+            $.ajax({
+                url: "{:url('index/submit/submitadd')}",
+                type: 'post',
+                data: $('form').serialize(),
+                dataType: 'json',
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function () {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                            location.href = data.url;
+                        });
+                    } else {
+                        layer.open({
+                            title: '提交失败',
+                            content: data.msg,
+                            icon: 5,
+                            anim: 6,
+                            shadeClose: true
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

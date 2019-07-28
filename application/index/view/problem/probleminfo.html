@@ -1,0 +1,257 @@
+{include file="public/_head" /}
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <span>
+                        <a href="{:url('index/problem/probleminfo', ['id' => $problemInfo.id])}">{$problemInfo.title}</a>
+                    </span>
+                    <div class="layui-card-footer">
+                        <span class="layui-badge layui-bg-cyan">Mem.Limit: {$problemInfo.memlimit}</span>
+                        <span class="layui-badge layui-bg-cyan">Time.Limit: {$problemInfo.timelimit}</span>
+                        <span class="layui-badge layui-bg-cyan">Total.Submission: {$problemInfo.subnum}</span>
+                        <span class="layui-badge layui-bg-cyan">AC.Submission: {$problemInfo.acnum}</span>
+                    </div>
+
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">Problem Description:</span>
+                        </div>
+                        <div class="layui-card-body">
+                            {$problemInfo.desc}
+                        </div>
+                    </div>
+
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">Input:</span>
+                        </div>
+                        <div class="layui-card-body">
+                            {$problemInfo.indesc}
+                        </div>
+                    </div>
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">Output:</span>
+                        </div>
+                        <div class="layui-card-body">
+                            {$problemInfo.outdesc|raw}
+                        </div>
+                    </div>
+
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">Sample Input:</span>
+                        </div>
+                        <div class="layui-card-body">
+                            <pre>{$problemInfo.insample|raw}</pre>
+                        </div>
+                    </div>
+
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">Sample Output:</span>
+                        </div>
+                        <div class="layui-card-body">
+                            <pre>{$problemInfo.outsample|raw}</pre>
+                        </div>
+                    </div>
+
+                    <div class="layui-card">
+                        {if $problemInfo.hint != null}
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">Hint:</span>
+                        </div>
+                        <div class="layui-card-body">
+                            {$problemInfo.hint}
+                        </div>
+                        {/if}
+                    </div>
+
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <span class="layui-badge layui-bg-cyan">Author:</span>
+                        </div>
+                        <div class="layui-card-body">
+                            {$problemInfo.admin.username}
+                        </div>
+                    </div>
+
+                    <div class="layui-card">
+                        <button id="problem-submit" dataid="{$problemInfo.id}" type="button" class="layui-btn layui-btn-normal layui-problem-submit">
+                            Submit
+                        </button>
+                    </div>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">GetcharZp</div>
+                <div class="layui-card-body">
+                    Ranking:&nbsp;<span class="layui-badge layui-bg-cyan">1</span><br>
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th>Pro.ID</th>
+                            <th>Judge Status</th>
+                            <th>Language</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <a href="#">1</a>
+                            </td>
+                            <td>
+                                <span class="layui-badge layui-bg-cyan">Accepted</span>
+                            </td>
+                            <td>Python</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#">2</a>
+                            </td>
+                            <td>
+                                <span class="layui-badge layui-bg-red">Wrong Answer</span>
+                            </td>
+                            <td>Java</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#">3</a>
+                            </td>
+                            <td>
+                                <span class="layui-badge layui-bg-red">Compilation Error</span>
+                            </td>
+                            <td>C/C++</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="#">4</a>
+                            </td>
+                            <td>
+                                <span class="layui-badge layui-bg-cyan">Accepted</span>
+                            </td>
+                            <td>Python</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    Comment
+                </div>
+                <div class="layui-card-body">
+                    {volist name="commentInfo" id="vo"}
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <a href="{:url('index/user/userinfo', ['id' => $vo.user.id])}">{$vo.user.username}:</a>
+                        </div>
+                        <div class="layui-card-body layui-problem-comment">
+                            {$vo.content}
+                            <br>
+                            <div class="layui-card-footer">
+                                {$vo.create_time}
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    {/volist}
+                    {$commentInfo->render()|raw}
+                    <form action="">
+                        <input type="hidden" name="pro_id" value="{$problemInfo.id}">
+                        <textarea class="layui-textarea" placeholder="请输入评论内容" name="comment"></textarea>
+                        <div class="layui-card"></div>
+                        <div class="layui-card">
+                            <button type="button" id="comment-btn" class="layui-btn layui-btn-normal layui-problem-submit">
+                                Comment
+                            </button>
+                        </div>
+                    </form>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+        {include file="public/_foot"}
+    </div>
+</div>
+{include file="public/_script" /}
+<script>
+    $(function () {
+        $('#comment-btn').click(function () {
+            if ("{:session('?user.id')}") {
+                $.ajax({
+                    url:"{:url('index/problem/problemcomment')}",
+                    type:'post',
+                    data:$('form').serialize(),
+                    dataType:'json',
+                    success:function (data) {
+                        if (data.code == 1) {
+                            layer.msg(data.msg, {
+                                icon:6,
+                                time:2000
+                            }, function () {
+                                location.href = location.href;
+                            });
+                        }else {
+                            layer.open({
+                                title:'评论失败',
+                                content:data.msg,
+                                icon:5,
+                                anim:6
+                            });
+                        }
+                    }
+                });
+            } else {
+                layer.open({
+                    icon:5,
+                    type: 2,
+                    title: 'Login First',
+                    area: ['470px', '300px'],
+                    content: "{:url('index/index/login')}",
+                    shadeClose: true
+                });
+            }
+            return false;
+        });
+
+        $('#problem-submit').click(function () {
+
+            if ("{:session('?user.id')}") {
+                var pro_id = $(this).attr('dataid');
+                layer.open({
+                    type: 2,
+                    title: '代码提交',
+                    area: ['60%', '80%'],
+                    content: "{:url('index/problem/problemsubmit')}?pro_id="+pro_id,
+                    shadeClose: true
+                });
+
+            } else {
+                layer.open({
+                    icon:5,
+                    type: 2,
+                    title: 'Login First',
+                    area: ['470px', '300px'],
+                    content: "{:url('index/index/login')}",
+                    shadeClose: true
+                });
+            }
+            return false;
+        });
+    })
+    
+</script>
+</body>
+</html>

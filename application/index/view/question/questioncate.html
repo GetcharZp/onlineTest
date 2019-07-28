@@ -1,0 +1,75 @@
+{include file="public/_head" /}
+
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <a href="{:url('index/question/questioncate')}">Problem Set</a>
+            </div>
+            <div class="layui-card-body">
+                <table class="layui-table" lay-skin="nob" lay-even="">
+                    <thead>
+                    <tr>
+                        <th style="width: 50px;">Solve</th>
+                        <th>#</th>
+                        <th>Problem Category</th>
+                        <th>Completion</th>
+                        <th>Ratio</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {volist name="cates" id="vo" key="k"}
+                    <tr>
+                        <td>
+                            <?php
+                                if ($vo['user_acnum'] == count($vo['question']) and count($vo['question']) != 0) {
+                            ?>
+                                <img src="/static/img/finish.png" alt="" style="height: 20px">
+                            <?php
+                                }
+                            ?>
+
+                        </td>
+                        <td>{$vo.id}</td>
+                        <td>
+                            {if session('?user.id')}
+                            <a href="{:url('index/question/questioninfo', ['cate_id' => $vo.id])}">{$vo.catename}</a>
+                            {else /}
+                            <a href="#" class="login-first">{$vo.catename}</a>
+                            {/if}
+                        </td>
+                        <td>
+                            <div class="layui-progress">
+                                {if session('?user.id')}
+                                <div class="layui-progress-bar layui-bg-red" lay-percent="{$vo.user_acnum}/<?php echo count($vo['question']) ?>"></div>
+                                {else /}
+                                <div class="layui-progress-bar layui-bg-red" lay-percent="0/<?php echo count($vo['question']) ?>"></div>
+                                {/if}
+                            </div>
+                        </td>
+                        <td>
+                            {if session('?user.id')}
+                            {$vo.user_acnum}
+                            {else /}
+                            0
+                            {/if}
+                            /
+                            {$vo.questionnum}
+                        </td>
+                    </tr>
+                    {/volist}
+                    </tbody>
+                </table>
+                {$cates->render()|raw}
+            </div>
+        </div>
+        {include file="public/_foot"}
+    </div>
+</div>
+
+{include file="public/_script" /}
+<script>
+
+</script>
+</body>
+</html>

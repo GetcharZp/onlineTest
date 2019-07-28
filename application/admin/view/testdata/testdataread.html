@@ -1,0 +1,74 @@
+{include file="public/_head" /}
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file="public/_left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;测试数据
+                    </li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget radius-bordered">
+                            <div class="widget-header bordered-bottom bordered-themeprimary">
+                                <span class="widget-caption">测试数据</span>
+                            </div>
+                            <div class="widget-body">
+                                <form class="form-horizontal">
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">问题标题</div>
+                                        <div class="layui-card-body">
+                                            {$testdataInfo.problem.title}
+                                        </div>
+                                    </div>
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">问题作者</div>
+                                        <div class="layui-card-body">
+                                            {$testdataInfo.admin.username}
+                                        </div>
+                                    </div>
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">输入数据</div>
+                                        <div class="layui-card-body">
+                                            <pre>{$testdataInfo.indata}</pre>
+                                        </div>
+                                    </div>
+                                    <div class="layui-card">
+                                        <div class="layui-card-header">输出数据</div>
+                                        <div class="layui-card-body">
+                                            <pre>{$testdataInfo.outdata}</pre>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+{include file="public/_foot" /}
+{include file="public/_script" /}
+</body>
+<!--  /Body -->
+</html>

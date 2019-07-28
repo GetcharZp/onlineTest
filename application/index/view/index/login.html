@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Login</title>
+	<link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css" />
+	<link rel="stylesheet" type="text/css" href="/static/css/layui_control.css" />
+</head>
+<body>
+
+<div class="layui-card">
+	<div class="layui-card-header">
+		Welcome To GetcharZp Online Practice System
+	</div>
+	<div class="layui-card-body">
+		<form action="" method="" class="layui-form">
+			<input name="username" class="layui-input" type="text" autocomplete="off" placeholder="请输入您的用户名或邮箱"> <br />
+			<input name="password" class="layui-input" type="password" autocomplete="off" lay-verify="" placeholder="请输入您的密码"> <br />
+			<button type="button" class="layui-btn login-register-color" id="login">Login</button>
+			&nbsp;&nbsp;&nbsp;<a href="{:url('index/index/forget')}" >Forget Your Password？</a>
+
+		</form>
+	</div>
+</div>
+
+<script src="/static/js/jquery-3.4.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/lib/layer/layer.js"></script>
+<script>
+	$(function () {
+		$('#login').click(function () {
+			$.ajax({
+				url: "{:url('index/index/login')}",
+				type: 'post',
+				data: $('form').serialize(),
+				dataType: 'json',
+				success:function (data) {
+					if (data.code == 1) {
+						layer.msg(data.msg, {
+							icon: 6,
+							time: 2000
+						}, function () {
+							var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+							parent.layer.close(index); //再执行关闭
+							window.parent.location.reload();
+						});
+					} else {
+						layer.open({
+							title: '登录失败',
+							content: data.msg,
+							icon: 5,
+							anim: 6,
+							shadeClose: true
+						});
+					}
+				}
+			});
+			return false;
+		});
+	})
+</script>
+</body>
+</html>

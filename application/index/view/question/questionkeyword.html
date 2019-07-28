@@ -1,0 +1,244 @@
+{include file="public/_head" /}
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    状态{$cates.user_acnum}/<?php echo count($cates['question'])?>
+                    <span class="layui-badge layui-bg-cyan">题目类型</span>
+                    <span class="layui-badge layui-bg-red">{$cates.catename}</span>
+                    <a href="{:url('index/question/questioncate')}" style="float: right; background-color:#393D49;" class="layui-btn">切换其他试题</a>
+                    <div class="layui-progress">
+                        {if session('?user.id')}
+                        <div class="layui-progress-bar layui-bg-red" lay-percent="{$cates.user_acnum}/<?php echo count($cates['question']) ?>"></div>
+                        {else /}
+                        <div class="layui-progress-bar layui-bg-red" lay-percent="0/<?php echo count($cates['question']) ?>"></div>
+                        {/if}
+                    </div>
+                </div>
+                {if $flag == 0}
+                <form action="" class="layui-form">
+                    <input type="hidden" name="que_id" value="{$questionInfo.id}">
+                    <input type="hidden" name="cate_id" value="{$questionInfo.cate_id}">
+                    <div class="layui-card-body">
+                        <div class="layui-card">
+                            <div class="layui-card-header">
+                                <span class="layui-badge layui-bg-cyan">Problem Type:</span>
+                                <span class="layui-badge layui-bg-red">
+                                {if $questionInfo.type == 1} 选择题 {/if}
+                                {if $questionInfo.type == 2} 判断题 {/if}
+                                {if $questionInfo.type == 3} 填空题 {/if}
+                            </span>&nbsp;
+                                <span class="layui-badge layui-bg-cyan">Author:</span>
+                                <span class="layui-badge layui-bg-red">{$questionInfo.admin.username}</span>
+                                <span class="layui-badge layui-bg-cyan">Pro.ID</span>
+                                <span class="layui-badge layui-bg-red">{$questionInfo.id}</span>
+                            </div>
+                            <div class="layui-card-body">
+                                <div class="layui-card-header">
+                                    {$questionInfo.content|raw}
+                                </div>
+                                <div class="layui-card-body">
+                                    {if $questionInfo.type == 1}
+                                    <div class="layui-form-item">
+                                        <div class="">
+                                            <input name="user_ans" title="{$questionInfo.ans_a}" type="radio" value="A"><br><br>
+                                            <input name="user_ans" title="{$questionInfo.ans_b}" type="radio" value="B"><br><br>
+                                            <input name="user_ans" title="{$questionInfo.ans_c}" type="radio" value="C"><br><br>
+                                            <input name="user_ans" title="{$questionInfo.ans_d}" type="radio" value="D"><br><br>
+                                        </div>
+                                    </div>
+                                    {/if}
+                                    {if $questionInfo.type == 2}
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-inline">
+                                            <input name="user_ans" title="{$questionInfo.ans_a}" type="radio" value="A"><br>
+                                            <input name="user_ans" title="{$questionInfo.ans_b}" type="radio" value="B"><br>
+                                        </div>
+                                    </div>
+                                    {/if}
+                                    {if $questionInfo.type == 3}
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-inline">
+                                            <input name="user_ans" type="text">
+                                        </div>
+                                    </div>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-card">
+                            {if session('?user.id')}
+                            <input id="question-submit" type="submit"
+                                    class="layui-btn layui-btn-normal layui-problem-submit" value="Submit">
+                            {else /}
+                            <input type="submit" class="layui-btn layui-btn-normal layui-problem-submit login-first"  value="Submit">
+                            {/if}
+                        </div>
+                        <br/>
+                        <br/>
+                    </div>
+                </form>
+                {else /}
+                <div class="layui-card-body">
+                    <h2>该类型的题目暂时没有，您可以试试其他题库哦(⊙o⊙)</h2><br><br>
+                    <a href="{:url('index/question/questioncate')}" class="layui-btn">其他题目</a>
+                </div>
+                {/if}
+            </div>
+        </div>
+
+        <div class="layui-col-md3">
+            {if session('?user.id')}
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    Ranking:&nbsp;<span class="layui-badge layui-bg-cyan">1</span><br>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th>Pro.ID</th>
+                            <th>Judge Status</th>
+                            <th>Pro.Cate</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="quessubs" id="vo"}
+                        <tr>
+                            <td>
+                                <a href="{:url('index/question/question', ['id'=>$vo.que_id])}">{$vo.que_id}</a>
+                            </td>
+                            <td>
+                                {if $vo.judge_status == 2}
+                                <span class="layui-badge layui-bg-cyan">Accepted</span>
+                                {/if}
+                                {if $vo.judge_status == 3}
+                                <span class="layui-badge layui-bg-red">Wrong Answer</span>
+                                {/if}
+                            </td>
+                            <td>{$vo.question.cate.catename}</td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {/if}
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    Comment
+                </div>
+                <div class="layui-card-body">
+                    {volist name="commentInfo" id="vo"}
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <a href="{:url('index/user/userinfo', ['id' => $vo.user.id])}">{$vo.user.username}:</a>
+                        </div>
+                        <div class="layui-card-body layui-problem-comment">
+                            {$vo.content}
+                            <br>
+                            <div class="layui-card-footer">
+                                {$vo.create_time}
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                    {/volist}
+                    {$commentInfo->render()|raw}
+                    <form action="">
+                        <input type="hidden" name="pro_id" value="{$questionInfo.id}">
+                        <textarea class="layui-textarea" placeholder="请输入评论内容" name="comment"></textarea>
+                        <div class="layui-card"></div>
+                        <div class="layui-card">
+                            <button type="button" id="comment-btn"
+                                    class="layui-btn layui-btn-normal layui-problem-submit">
+                                Comment
+                            </button>
+                        </div>
+                    </form>
+                    <br>
+                    <br>
+                </div>
+            </div>
+        </div>
+        {include file="public/_foot"}
+    </div>
+</div>
+{include file="public/_script" /}
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form
+    });
+
+    $(function () {
+        $('#comment-btn').click(function () {
+            if ("{:session('?user.id')}") {
+                $.ajax({
+                    url: "{:url('index/problem/problemcomment')}",
+                    type: 'post',
+                    data: $('form').serialize(),
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 1) {
+                            layer.msg(data.msg, {
+                                icon: 6,
+                                time: 2000
+                            }, function () {
+                                location.href = location.href;
+                            });
+                        } else {
+                            layer.open({
+                                title: '评论失败',
+                                content: data.msg,
+                                icon: 5,
+                                anim: 6
+                            });
+                        }
+                    }
+                });
+            } else {
+                layer.open({
+                    icon: 5,
+                    type: 2,
+                    title: 'Login First',
+                    area: ['470px', '300px'],
+                    content: "{:url('index/index/login')}",
+                    shadeClose: true
+                });
+            }
+            return false;
+        });
+
+        $('#question-submit').click(function () {
+            $.ajax({
+                url: "{:url('index/question/quessub')}",
+                data: $('form').serialize(),
+                type: 'post',
+                dataType: 'json',
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg('答案提交成功',{
+                            icon: 6,
+                            time: 2000
+                        }, function () {
+                            location.href = data.url;
+                        });
+                    } else {
+                        layer.open({
+                            title: '答案提交失败',
+                            content: data.msg,
+                            icon: 5,
+                            anim: 6,
+                            shadeClose: true
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+</body>
+</html>

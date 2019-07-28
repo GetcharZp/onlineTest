@@ -1,0 +1,57 @@
+{include file="public/_head" /}
+
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md9">
+            {volist name="news" id="vo"}
+            <div class="layui-card">
+                <div class="layui-card-header">{$vo.title}</div>
+                <div class="layui-card-body">
+                    {$vo.content|raw}
+                    <br>
+                    <div class="layui-card-footer">
+                        <a href="#" class="layui-btn layui-btn-sm">
+                            {$vo.admin.username}
+                        </a>
+                        &nbsp; {$vo.create_time}
+                    </div>
+                    <br>
+                </div>
+            </div>
+            {/volist}
+        </div>
+        <div class="layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">Racking</div>
+                <div class="layui-card-body">
+                    <table class="layui-table" lay-skin="nob" lay-even="">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Ranking</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="rankings" id="vo" key="k"}
+                        <tr>
+                            <td>{$k}</td>
+                            <td>
+                                <a href="{:url('index/user/userinfo', ['id' => $vo.id])}">
+                                    {$vo.username}
+                                </a>
+                            </td>
+                            <td>{$vo.acnum}</td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {include file="public/_foot" /}
+    </div>
+</div>
+{include file="public/_script" /}
+</body>
+</html>

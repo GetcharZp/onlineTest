@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Forget</title>
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/layui_control.css"/>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">
+        Forget password
+    </div>
+    <div class="layui-card-body">
+        <form action="" method="" class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input name="email" class="layui-input" type="text" autocomplete="off" lay-verify="email"
+                           placeholder="请输入您的邮箱">
+                </div>
+                <input type="button" id="getVerify" style="float: left;" class="layui-btn login-register-color" value="Send">
+            </div>
+            <input name="verify" class="layui-input" type="text" autocomplete="off" lay-verify="email"
+                   placeholder="请输入您的验证码">
+            <br/>
+
+            <input name="password" class="layui-input" type="password" autocomplete="off" lay-verify=""
+                   placeholder="请输入您的密码">
+            <br/>
+            <input name="conpass" class="layui-input" type="password" autocomplete="off" lay-verify=""
+                   placeholder="确认您的密码">
+            <br/>
+            <button id="resetPassword" type="button" class="layui-btn login-register-color layui-problem-submit">Reset</button>
+            <br>
+        </form>
+    </div>
+</div>
+<script src="/static/js/jquery-3.4.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/lib/layer/layer.js"></script>
+<script>
+
+    $(function () {
+        $('#getVerify').click(function () {
+            $.ajax({
+                url: "{:url('index/index/verifyforget')}",
+                type: 'post',
+                data: $('form').serialize(),
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        });
+                        var count = 120;
+                        var countdown = setInterval(CountDown, 1000);
+                        function CountDown() {
+                            $('#getVerify').attr("disabled", true);
+                            $('#getVerify').val(count + "(S)");
+                            if (count == 0) {
+                                $('#getVerify').val("Send").removeAttr("disabled");
+                                clearInterval(countdown);
+                            }
+                            count--;
+                        }
+                    } else {
+                        layer.open({
+                            title: '验证码发送失败',
+                            content: data.msg,
+                            shadeClose: true,
+                            icon: 5,
+                            anim: 6
+                        });
+                    }
+                }
+            });
+            return false;
+        })
+
+        $('#resetPassword').click(function () {
+            $.ajax({
+                url: "{:url('index/index/forget')}",
+                data:$('form').serialize(),
+                type: 'post',
+                dataType: 'json',
+                success:function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function () {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                            window.parent.location.reload();
+                        });
+                    } else {
+                        layer.open({
+                            title: '密码修改失败',
+                            content: data.msg,
+                            icon: 5,
+                            anim: 6
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

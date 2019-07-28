@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="/static/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/layui_control.css"/>
+</head>
+<body>
+<div class="layui-card">
+    <div class="layui-card-header">
+        Welcome To GetcharZp Online Practice System
+    </div>
+    <div class="layui-card-body">
+        <form action="" method="" class="layui-form">
+            <input name="username" class="layui-input" type="text" autocomplete="off" lay-verify=""
+                   placeholder="请输入您的用户名"><br/>
+            <div class="layui-form-item">
+                <div class="layui-input-inline">
+                    <input name="email" class="layui-input" type="text" autocomplete="off" lay-verify="email"
+                           placeholder="请输入您的邮箱">
+                </div>
+                <input type="button" style="float: left;" id="getVerify" class="layui-btn login-register-color" value="Click To Send">
+            </div>
+            <input name="verify" class="layui-input" type="text" autocomplete="off" lay-verify="email"
+                   placeholder="请输入您的验证码">
+            <br/>
+            <input name="password" class="layui-input" type="password" autocomplete="off" lay-verify=""
+                   placeholder="请输入您的密码">
+            <br/>
+            <input name="conpass" class="layui-input" type="password" autocomplete="off" lay-verify=""
+                   placeholder="确认您的密码">
+            <br/>
+            <button type="button" class="layui-btn login-register-color " id="register">Register</button>
+            <!--<a href="#" class="layui-btn login-register-color">QQ</a>-->
+        </form>
+    </div>
+</div>
+<script src="/static/js/jquery-3.4.0.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/lib/layer/layer.js"></script>
+<script>
+
+    $(function () {
+        $('#register').click(function () {
+            $.ajax({
+                url: "{:url('index/index/register')}",
+                type: 'post',
+                data: $('form').serialize(),
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function () {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                            window.parent.location.reload();
+                        });
+                    } else {
+                        layer.open({
+                            title: '注册失败',
+                            content: data.msg,
+                            shadeClose: true,
+                            icon: 5,
+                            anim: 6
+                        });
+                    }
+                }
+            });
+
+            return false;
+        });
+
+        $('#getVerify').click(function () {
+            $.ajax({
+                url: "{:url('index/index/verify')}",
+                type: 'post',
+                data: $('form').serialize(),
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        });
+                        var count = 120;
+                        var countdown = setInterval(CountDown, 1000);
+                        function CountDown() {
+                            $('#getVerify').attr("disabled", true);
+                            $('#getVerify').val(count + "(S)");
+                            if (count == 0) {
+                                $('#getVerify').val("click to send").removeAttr("disabled");
+                                clearInterval(countdown);
+                            }
+                            count--;
+                        }
+                    } else {
+                        layer.open({
+                            title: '验证码发送失败',
+                            content: data.msg,
+                            shadeClose: true,
+                            icon: 5,
+                            anim: 6
+                        });
+                    }
+                }
+            });
+            return false;
+        })
+    });
+</script>
+</body>
+</html>

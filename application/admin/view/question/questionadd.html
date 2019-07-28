@@ -1,0 +1,233 @@
+{include file="public/_head" /}
+<!-- Main Container -->
+<div class="main-container container-fluid">
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Page Sidebar -->
+        {include file="public/_left" /}
+        <!-- /Page Sidebar -->
+        <!-- Page Content -->
+        <div class="page-content">
+            <!-- Page Breadcrumb -->
+            <div class="page-breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active">
+                        <i class="fa fa-home"></i>&nbsp;问题管理
+                    </li>
+                    <li>
+                        问题添加
+                    </li>
+                </ul>
+            </div>
+            <!-- /Page Breadcrumb -->
+            <!-- Page Body -->
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="widget radius-bordered">
+                            <div class="widget-header bordered-bottom bordered-themeprimary">
+                                <span class="widget-caption">问题添加</span>
+                            </div>
+                            <div class="widget-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label no-padding-right">问题分类</label>
+                                        <div class="col-sm-6">
+                                            <select name="cate_id" id="cate_id" class="form-control">
+                                                <option value="">请选择问题分类</option>
+                                                {volist name="cates" id="vo"}
+                                                <option value="{$vo.id}">{$vo.catename}</option>
+                                                {/volist}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group layui-form-item">
+                                        <label for="difflavel"
+                                               class="control-label col-sm-2 no-padding-right">难易程度</label>
+                                        <div class="col-sm-6">
+                                            <select name="difflavel" id="difflavel" class="form-control">
+                                                <option value="">请选择难易程度</option>
+                                                <option value="1">入门</option>
+                                                <option value="2">简单</option>
+                                                <option value="3">容易</option>
+                                                <option value="4">困难</option>
+                                                <option value="5">艰难</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="type" class="col-sm-2 control-label no-padding-right">问题类型</label>
+                                        <div class="col-sm-6">
+                                            <select name="type" id="type" class="form-control"
+                                                    onChange="cll(this.value)">
+                                                <option value="">请选择问题类型</option>
+                                                <option value="1">选择题</option>
+                                                <option value="2">判断题</option>
+                                                <option value="3">填空题</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-2">问题描述</label>
+                                        <div class="col-sm-6">
+                                            <textarea name="content" id="content" cols="80" rows="10"></textarea>
+                                        </div>
+                                    </div>
+                                    <div id="chose" style="display: none">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">A:</label>
+                                            <div class="col-sm-6">
+                                                <textarea id="chose_a" cols="80" rows="4"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">B:</label>
+                                            <div class="col-sm-6">
+                                                <textarea id="chose_b" cols="80" rows="4"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">C:</label>
+                                            <div class="col-sm-6">
+                                                <textarea id="chose_c" cols="80" rows="4"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">D:</label>
+                                            <div class="col-sm-6">
+                                                <textarea id="chose_d" cols="80" rows="4"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">参考答案</label>
+                                            <div class="col-sm-6">
+                                                <select id="chose_acans" class="">
+                                                    <option value="">请选择参考答案</option>
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                    <option value="C">C</option>
+                                                    <option value="D">D</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="judge" style="display: none">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">A:</label>
+                                            <div class="col-sm-6">
+                                                <textarea id="judge_a" cols="80" rows="4"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">B:</label>
+                                            <div class="col-sm-6">
+                                                <textarea id="judge_b" cols="80" rows="4"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">参考答案</label>
+                                            <div class="col-sm-6 layui-input-inline">
+                                                <select id="judge_acans">
+                                                    <option value="">请选择参考答案</option>
+                                                    <option value="A">A</option>
+                                                    <option value="B">B</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="fill" style="display: none">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label no-padding-right">参考答案</label>
+                                            <div class="col-sm-6 layui-input-inline">
+                                                <textarea id="fill_acans" cols="80" rows="4"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10">
+                                            <button type="submit" class="btn btn-primary" id="questionAdd">添加</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Page Body -->
+        </div>
+        <!-- /Page Content -->
+
+    </div>
+    <!-- /Page Container -->
+    <!-- Main Container -->
+
+</div>
+
+{include file="public/_foot" /}
+{include file="public/_script" /}
+<script src="/static/lib/ueditor/ueditor.config.js" type="text/javascript" charset="utf-8"></script>
+<script src="/static/lib/ueditor/ueditor.all.js"></script>
+<script>
+    function cll(id) {
+        if (id == 1) {
+            $('#chose_acans').attr('name', 'acans');
+            $('#chose_a').attr('name', 'ans_a');
+            $('#chose_b').attr('name', 'ans_b');
+            $('#chose_c').attr('name', 'ans_c');
+            $('#chose_d').attr('name', 'ans_d');
+            eval("chose.style.display=\"\";");
+            eval("judge.style.display=\"none\";");
+            eval("fill.style.display=\"none\";");
+        }
+        if (id == 2) {
+            $('#judge_acans').attr('name', 'acans');
+            $('#judge_a').attr('name', 'ans_a');
+            $('#judge_b').attr('name', 'ans_b');
+            eval("judge.style.display=\"\";");
+            eval("chose.style.display=\"none\";");
+            eval("fill.style.display=\"none\";");
+        }
+        if (id == 3) {
+            $('#fill_acans').attr('name', 'acans');
+            eval("judge.style.display=\"none\";");
+            eval("chose.style.display=\"none\";");
+            eval("fill.style.display=\"\";");
+        }
+    }
+
+    $(function () {
+        UE.getEditor('content');
+
+        $('#questionAdd').click(function () {
+            $.ajax({
+                url: "{:url('admin/question/questionadd')}",
+                type: 'post',
+                data: $('form').serialize(),
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        layer.msg(data.msg, {
+                            icon: 6,
+                            time: 2000
+                        }, function () {
+                            location.href = data.url;
+                        });
+                    } else {
+                        layer.open({
+                            title: '添加失败',
+                            content: data.msg,
+                            icon: 5,
+                            anim: 6
+                        });
+                    }
+                }
+            });
+            return false;
+        });
+    });
+</script>
+</body>
+<!--  /Body -->
+</html>
